@@ -1,0 +1,81 @@
+(function(){const t=document.createElement("link").relList;if(t&&t.supports&&t.supports("modulepreload"))return;for(const s of document.querySelectorAll('link[rel="modulepreload"]'))n(s);new MutationObserver(s=>{for(const i of s)if(i.type==="childList")for(const r of i.addedNodes)r.tagName==="LINK"&&r.rel==="modulepreload"&&n(r)}).observe(document,{childList:!0,subtree:!0});function o(s){const i={};return s.integrity&&(i.integrity=s.integrity),s.referrerPolicy&&(i.referrerPolicy=s.referrerPolicy),s.crossOrigin==="use-credentials"?i.credentials="include":s.crossOrigin==="anonymous"?i.credentials="omit":i.credentials="same-origin",i}function n(s){if(s.ep)return;s.ep=!0;const i=o(s);fetch(s.href,i)}})();const d=[{id:"adhd_1",category:"adhd",text:"Do you often have difficulty sustaining attention during tasks or activities?"},{id:"adhd_2",category:"adhd",text:"Do you often feel like you're not listening when someone speaks directly to you?"},{id:"adhd_3",category:"adhd",text:"Do you often struggle to follow through on instructions and fail to finish tasks or duties?"},{id:"adhd_4",category:"adhd",text:"Do you find it difficult to organize tasks, activities, or your personal belongings?"},{id:"adhd_5",category:"adhd",text:"Do you often avoid or dislike tasks that require sustained mental effort, like long forms or reading?"},{id:"adhd_6",category:"adhd",text:"Do you frequently lose things necessary for tasks and daily activities, like keys, phones, or glasses?"},{id:"adhd_7",category:"adhd",text:"Are you easily distracted by unrelated thoughts or external stimuli?"},{id:"adhd_8",category:"adhd",text:"Do you often fidget with your hands or feet, or squirm when you have to sit still?"},{id:"adhd_9",category:"adhd",text:"Do you often feel restless or have an internal feeling of being driven by a motor?"},{id:"adhd_10",category:"adhd",text:"Do you tend to blurt out answers before a question has been fully asked, or finish other people's sentences?"},{id:"adhd_11",category:"adhd",text:"Do you find it highly frustrating or difficult to wait your turn in lines or conversations?"},{id:"asd_1",category:"asdClassic",text:"Do you find it difficult to understand the unwritten rules of social situations?"},{id:"asd_2",category:"asdClassic",text:"Do you strongly prefer to do things the exact same way over and over again?"},{id:"asd_4",category:"asdClassic",text:"Do you become very upset, anxious, or distressed by unexpected changes in your routine or plans?"},{id:"asd_5",category:"asdClassic",text:"Do you have highly intense, specific interests that you spend a lot of time researching or talking about?"},{id:"asd_6",category:"asdClassic",text:"Do you find making or maintaining eye contact uncomfortable or distracting when talking to someone?"},{id:"asd_7",category:"asdClassic",text:"Do you tend to take things very literally and sometimes miss sarcasm, jokes, or hidden meanings?"},{id:"asd_8",category:"asdClassic",text:"Do you easily feel overwhelmed by sensory input, such as loud noises, bright lights, or certain textures?"},{id:"asd_9",category:"asdClassic",text:"Do you make repetitive physical movements, like rocking, tapping, or hand-flapping, to calm down or express excitement?"},{id:"asd_10",category:"asdClassic",text:"Do you find small talk or casual, unstructured conversation to be exhausting or confusing?"},{id:"mod_1",category:"asdModern",text:"Do you consciously study how other people interact so you can copy them and appear normal?"},{id:"mod_2",category:"asdModern",text:"Do you often feel exhausted after social interactions because of the effort it takes to hide your natural behaviors?"},{id:"mod_3",category:"asdModern",text:"Have you experienced periods where you lose skills you previously had, like speaking or organizing, due to prolonged stress?"},{id:"mod_4",category:"asdModern",text:"When engaged in a task you care about, do you find it almost impossible to shift your attention to something else?"},{id:"mod_5",category:"asdModern",text:"Do you experience a strong internal resistance or panic when someone places a demand or expectation on you?"},{id:"mod_6",category:"asdModern",text:"Do you physically feel other people's emotions or get easily overwhelmed by the vibe of a room?"},{id:"mod_7",category:"asdModern",text:"Do you struggle to initiate tasks even when you desperately want or need to do them?"},{id:"mod_8",category:"asdModern",text:"Do you need significant downtime in a dark or quiet space to recover from a typical day?"},{id:"mod_9",category:"asdModern",text:"Do you prefer communicating via text rather than speaking because it allows you time to process and formulate responses?"},{id:"mod_10",category:"asdModern",text:"Do you suppress the urge to move, fidget, or make sounds in public to avoid drawing attention to yourself?"},{id:"mod_11",category:"asdModern",text:"Do you feel like you have multiple different personalities depending on which social group you are interacting with?"},{id:"mod_13",category:"asdModern",text:"Do you mentally rehearse conversations before they happen to ensure you say the right things?"},{id:"mod_15",category:"asdModern",text:"Does your tolerance for sensory input, like noise or light, drastically drop when you are stressed or tired?"},{id:"mod_16",category:"asdModern",text:"When deeply engaged in a specific interest, do you often forget to eat, drink, or use the bathroom?"},{id:"mod_17",category:"asdModern",text:"Do you get stuck in waiting mode when you have an appointment later in the day, unable to focus on anything else beforehand?"},{id:"mod_20",category:"asdModern",text:"Do you feel a profound, sometimes painful, sense of injustice when witnessing unfairness, even if it doesn't affect you directly?"},{id:"mod_21",category:"asdModern",text:"Do you feel an intense need to be in absolute control of your own schedule and environment to feel safe?"},{id:"mod_23",category:"asdModern",text:"Do you need to understand all the small, specific details of a plan or concept before you can understand the overall goal?"},{id:"asq_1",category:"asdAsq",text:"Do you strongly prefer to do things on your own rather than with others?"},{id:"asq_2",category:"asdAsq",text:"Do you frequently get so strongly absorbed in one thing that you lose sight of other things happening around you?"},{id:"asq_3",category:"asdAsq",text:"Do you often notice small sounds when others do not?"},{id:"asq_4",category:"asdAsq",text:"Do you usually notice details like car license plates, specific dates, or similar strings of information?"},{id:"asq_6",category:"asdAsq",text:"Do you find yourself drawn more strongly to understanding things, objects, and systems rather than people?"},{id:"asq_7",category:"asdAsq",text:"When you talk about your interests, does it often seem hard for others to get a word in edgeways?"},{id:"asq_8",category:"asdAsq",text:"Are you fascinated by numbers, patterns, or categorizing specific types of information?"},{id:"asq_9",category:"asdAsq",text:"When reading a story or watching a movie, do you find it difficult to work out the characters' unspoken intentions or feelings?"},{id:"asq_11",category:"asdAsq",text:"When you talk on the phone, are you unsure when it's your turn to speak?"},{id:"asq_12",category:"asdAsq",text:"Do you tend to notice details of a situation or object before you notice the big picture?"}],c=[{label:"Never",value:0},{label:"Rarely",value:1},{label:"Sometimes",value:2},{label:"Often",value:3},{label:"Very Often",value:4}],a={adhd:"ADHD traits",asdClassic:"Autism traits: classic/DSM-oriented",asdModern:"Autism traits: internalized/masking/burnout-oriented",asdAsq:"Autism-spectrum quotient-style traits"},u={adhd:"Attention regulation, impulsivity, restlessness, and executive follow-through.",asdClassic:"Observable social-communication, routine, literalness, sensory, and repetitive-behavior traits.",asdModern:"Masking, burnout, demand sensitivity, inertia, sensory depletion, and internal social effort.",asdAsq:"Systemizing, detail-focus, absorption, pattern attention, and social inference traits."};function l(e){return e<35?{text:"Lower screen signal",className:"low"}:e<65?{text:"Moderate screen signal",className:"moderate"}:{text:"Elevated screen signal",className:"elevated"}}function y(){return Object.keys(a).reduce((e,t)=>(e[t]={raw:0,max:0,percent:0,level:l(0)},e),{})}function p(){const e=y();return d.forEach(t=>{const o=document.querySelector(`input[name="${t.id}"]:checked`),n=o?Number(o.value):0;e[t.category].raw+=n,e[t.category].max+=4}),Object.keys(e).forEach(t=>{const o=e[t];o.percent=Math.round(o.raw/o.max*100),o.level=l(o.percent)}),e}function g(e){const t=[];return e.asdModern.percent>=65&&e.asdClassic.percent<50?t.push({title:"High internalized/autistic-masking signal",text:"Responses are stronger on masking, burnout, demand sensitivity, task inertia, and sensory depletion than on externally visible classic traits. That pattern can be consistent with high-masking autism, but this tool cannot determine diagnosis."}):e.asdClassic.percent>=65&&e.asdModern.percent>=65&&t.push({title:"Broad autism-trait signal",text:"Responses are elevated across both classic/observable and internalized trait clusters. This is a stronger screen-level reason to consider formal autism evaluation, especially if traits create impairment or chronic exhaustion."}),e.adhd.percent>=65&&t.push({title:"Prominent ADHD-trait signal",text:"Responses are elevated for attention regulation, follow-through, organization, restlessness, and impulse timing. If autism-trait scores are also elevated, the lived presentation may involve competing attention, sensory, and executive-function needs."}),e.asdAsq.percent>=65&&e.asdClassic.percent<50&&e.asdModern.percent<50&&t.push({title:"Systemizing/detail-focused cognitive style",text:"Responses suggest strong pattern, detail, absorption, and systems-oriented traits without an equally strong distress or social-communication signal. That may represent cognitive style rather than clinical impairment."}),e.asdModern.percent<35&&t.push({title:"Low internalized autism-trait signal",text:"Masking, burnout, demand sensitivity, and sensory depletion were not strongly endorsed."}),e.asdClassic.percent<35&&t.push({title:"Low classic autism-trait signal",text:"Traditional observable autism markers were not strongly endorsed."}),e.adhd.percent<35&&t.push({title:"Low ADHD-trait signal",text:"Attention regulation, restlessness, and executive-function items were not strongly endorsed."}),e.asdAsq.percent<35&&t.push({title:"Low systemizing/detail-focus signal",text:"Pattern-recognition and detail-focused items were not strongly endorsed."}),t.length||t.push({title:"Moderate/mixed screen profile",text:"Scores sit mostly in the middle range and do not strongly cluster into one profile. Interpretation depends heavily on impairment, onset, context, and whether symptoms are lifelong versus recent."}),t}function h(e){const t=Object.values(e).some(n=>n.percent>=65),o=Object.values(e).some(n=>n.percent>=35);return t?{title:"Formal assessment is reasonable to consider",text:"At least one trait cluster is elevated. A clinical assessment is more strongly warranted if the traits are lifelong, occur across settings, and cause functional impairment, burnout, relationship friction, occupational friction, or need for accommodations."}:o?{title:"Assessment depends on impairment and history",text:"Moderate scores can reflect neurodivergent traits, stress, sleep disruption, anxiety, depression, trauma, medical issues, or context-specific overload. Formal evaluation is most useful when the pattern is persistent and practically consequential."}:{title:"Low screen-level indication",text:"Scores do not strongly suggest a need for formal ADHD/autism assessment on this item set alone. This does not rule out either condition, especially if the person has strong compensatory strategies or atypical presentation."}}function m(){const e=document.querySelector("#questions"),t=d.reduce((o,n)=>(o[n.category]||(o[n.category]=[]),o[n.category].push(n),o),{});e.innerHTML=Object.entries(t).map(([o,n])=>`
+    <section class="question-section" aria-labelledby="${o}-heading">
+      <div class="section-heading">
+        <h2 id="${o}-heading">${a[o]}</h2>
+        <p>${u[o]}</p>
+      </div>
+      ${n.map(s=>f(s)).join("")}
+    </section>
+  `).join("")}function f(e){return`
+    <fieldset class="question-card">
+      <legend>${e.text}</legend>
+      <div class="options">
+        ${c.map(t=>`
+          <label class="option">
+            <input type="radio" name="${e.id}" value="${t.value}" ${t.value===0?"checked":""} />
+            <span>${t.label}</span>
+          </label>
+        `).join("")}
+      </div>
+    </fieldset>
+  `}function v(e){const t=g(e),o=h(e),n=document.querySelector("#results");n.innerHTML=`
+    <div class="results-panel" role="status" aria-live="polite">
+      <div class="results-header">
+        <h2>Assessment results</h2>
+        <p>Screening output only. Not a diagnosis, medical advice, or validated replacement for ASRS, AQ, RAADS-R, CAT-Q, ADOS-2, DIVA-5, or clinician assessment.</p>
+      </div>
+
+      <div class="score-grid">
+        ${Object.entries(e).map(([s,i])=>`
+          <article class="score-card ${i.level.className}">
+            <div class="score-topline">
+              <h3>${a[s]}</h3>
+              <strong>${i.percent}%</strong>
+            </div>
+            <div class="bar" aria-hidden="true"><span style="width:${i.percent}%"></span></div>
+            <p><b>${i.level.text}</b> · ${i.raw} / ${i.max}</p>
+          </article>
+        `).join("")}
+      </div>
+
+      <section class="result-section">
+        <h3>Trait profile</h3>
+        <ul class="profile-list">
+          ${t.map(s=>`<li><b>${s.title}:</b> ${s.text}</li>`).join("")}
+        </ul>
+      </section>
+
+      <section class="result-section guidance">
+        <h3>${o.title}</h3>
+        <p>${o.text}</p>
+      </section>
+
+      <div class="actions secondary-actions">
+        <button type="button" id="copy-results">Copy results</button>
+        <button type="button" id="print-results">Print / save PDF</button>
+      </div>
+    </div>
+  `,document.querySelector("#copy-results").addEventListener("click",()=>b(e,o)),document.querySelector("#print-results").addEventListener("click",()=>window.print()),n.scrollIntoView({behavior:"smooth",block:"start"})}async function b(e,t){const o=["Neurodivergence pre-assessment results","",...Object.entries(e).map(([n,s])=>`${a[n]}: ${s.percent}% (${s.raw}/${s.max}) - ${s.level.text}`),"",`${t.title}: ${t.text}`];try{await navigator.clipboard.writeText(o.join(`
+`));const n=document.querySelector("#copy-results");n.textContent="Copied",setTimeout(()=>{n.textContent="Copy results"},1400)}catch{window.prompt("Copy results:",o.join(`
+`))}}function x(){document.querySelectorAll('input[type="radio"][value="0"]').forEach(e=>{e.checked=!0}),document.querySelector("#results").innerHTML="",window.scrollTo({top:0,behavior:"smooth"})}function w(){document.querySelector("#app").innerHTML=`
+    <main class="app-shell">
+      <header class="hero">
+        <p class="eyebrow">Screening tool</p>
+        <h1>Neurodivergence Pre-Assessment</h1>
+        <p class="lede">A lightweight self-report screener for ADHD traits, classic autism traits, internalized/masking-oriented autism traits, and AQ-style systemizing traits.</p>
+        <div class="notice">
+          <b>Use constraint:</b> This is an exploratory screening tool. It is not clinically validated as a standalone diagnostic instrument and does not collect or transmit responses.
+        </div>
+      </header>
+
+      <form id="assessment-form">
+        <div id="questions"></div>
+        <div class="actions sticky-actions">
+          <button type="submit">Calculate results</button>
+          <button type="button" class="ghost" id="reset-form">Reset</button>
+        </div>
+      </form>
+
+      <section id="results" aria-label="Assessment results"></section>
+    </main>
+  `,m(),document.querySelector("#assessment-form").addEventListener("submit",e=>{e.preventDefault(),v(p())}),document.querySelector("#reset-form").addEventListener("click",x)}w();
