@@ -60,23 +60,23 @@ const options = [
 ]
 
 const categoryLabels = {
-  adhd: 'ADHD traits',
-  asdClassic: 'Autism traits: classic/DSM-oriented',
-  asdModern: 'Autism traits: internalized/masking/burnout-oriented',
-  asdAsq: 'Autism-spectrum quotient-style traits'
+  adhd: 'ADHD Traits (Traditional)',
+  asdClassic: 'Autism (Classic DSM-5)',
+  asdModern: 'Autism (Modern/Internal)',
+  asdAsq: 'Autism Quotient (ASQ)'
 }
 
 const categoryDescriptions = {
-  adhd: 'Attention regulation, impulsivity, restlessness, and executive follow-through.',
-  asdClassic: 'Observable social-communication, routine, literalness, sensory, and repetitive-behavior traits.',
-  asdModern: 'Masking, burnout, demand sensitivity, inertia, sensory depletion, and internal social effort.',
-  asdAsq: 'Systemizing, detail-focus, absorption, pattern attention, and social inference traits.'
+  adhd: 'Executive functioning, attention regulation, restlessness, and impulsive timing.',
+  asdClassic: 'Traditional autism markers: social rules, routine rigidity, literalness, sensory load, and repetitive movements.',
+  asdModern: 'Internalized autism markers: masking, burnout, demand avoidance, task inertia, sensory depletion, and recovery load.',
+  asdAsq: 'AQ-style markers: systemizing, detail-focus, absorption, pattern attention, and social inference.'
 }
 
 function getLevel(percent) {
-  if (percent < 35) return { text: 'Lower screen signal', className: 'low' }
-  if (percent < 65) return { text: 'Moderate screen signal', className: 'moderate' }
-  return { text: 'Elevated screen signal', className: 'elevated' }
+  if (percent < 35) return { text: 'Sub-Clinical / Low', className: 'low' }
+  if (percent < 65) return { text: 'Moderate Traits', className: 'moderate' }
+  return { text: 'High Likelihood', className: 'elevated' }
 }
 
 function emptyScores() {
@@ -110,47 +110,47 @@ function generateProfile(scores) {
 
   if (scores.asdModern.percent >= 65 && scores.asdClassic.percent < 50) {
     notes.push({
-      title: 'High internalized/autistic-masking signal',
-      text: 'Responses are stronger on masking, burnout, demand sensitivity, task inertia, and sensory depletion than on externally visible classic traits. That pattern can be consistent with high-masking autism, but this tool cannot determine diagnosis.'
+      title: 'High-Masking Autistic Profile',
+      text: 'High Modern/Internal traits with lower Classic traits is the high-masking pattern: heavy internal load, active camouflage, externally managed presentation, and a higher risk of being missed by traditional screens.'
     })
   } else if (scores.asdClassic.percent >= 65 && scores.asdModern.percent >= 65) {
     notes.push({
-      title: 'Broad autism-trait signal',
-      text: 'Responses are elevated across both classic/observable and internalized trait clusters. This is a stronger screen-level reason to consider formal autism evaluation, especially if traits create impairment or chronic exhaustion.'
+      title: 'Classic & Internalized Autistic Profile',
+      text: 'High scores across both classic and modern metrics indicate a broad autistic-neurotype pattern affecting both visible social navigation and internal regulation.'
     })
   }
 
   if (scores.adhd.percent >= 65) {
     notes.push({
-      title: 'Prominent ADHD-trait signal',
-      text: 'Responses are elevated for attention regulation, follow-through, organization, restlessness, and impulse timing. If autism-trait scores are also elevated, the lived presentation may involve competing attention, sensory, and executive-function needs.'
+      title: 'Prominent ADHD Profile',
+      text: 'The ADHD cluster is strongly elevated: attention regulation, follow-through, organization, restlessness, and impulse timing. With elevated autism scores, this becomes an AuDHD-style friction profile.'
     })
   }
 
   if (scores.asdAsq.percent >= 65 && scores.asdClassic.percent < 50 && scores.asdModern.percent < 50) {
     notes.push({
-      title: 'Systemizing/detail-focused cognitive style',
-      text: 'Responses suggest strong pattern, detail, absorption, and systems-oriented traits without an equally strong distress or social-communication signal. That may represent cognitive style rather than clinical impairment.'
+      title: 'Systemizing Cognitive Style',
+      text: 'The systemizing/detail pattern is dominant: strong pattern recognition, absorption, categorization, and object/system orientation without the same degree of distress signal.'
     })
   }
 
   if (scores.asdModern.percent < 35) {
-    notes.push({ title: 'Low internalized autism-trait signal', text: 'Masking, burnout, demand sensitivity, and sensory depletion were not strongly endorsed.' })
+    notes.push({ title: 'Low Internalized Autistic Traits', text: 'Masking, burnout, demand avoidance, and sensory-depletion traits are not meaningfully elevated.' })
   }
   if (scores.asdClassic.percent < 35) {
-    notes.push({ title: 'Low classic autism-trait signal', text: 'Traditional observable autism markers were not strongly endorsed.' })
+    notes.push({ title: 'Low Classic Autistic Traits', text: 'Traditional autistic markers are not meaningfully elevated.' })
   }
   if (scores.adhd.percent < 35) {
-    notes.push({ title: 'Low ADHD-trait signal', text: 'Attention regulation, restlessness, and executive-function items were not strongly endorsed.' })
+    notes.push({ title: 'Low ADHD Traits', text: 'Attention regulation and executive-function traits are not meaningfully elevated.' })
   }
   if (scores.asdAsq.percent < 35) {
-    notes.push({ title: 'Low systemizing/detail-focus signal', text: 'Pattern-recognition and detail-focused items were not strongly endorsed.' })
+    notes.push({ title: 'Low Systemizing Traits', text: 'Pattern-recognition and systemizing traits are not meaningfully elevated.' })
   }
 
   if (!notes.length) {
     notes.push({
-      title: 'Moderate/mixed screen profile',
-      text: 'Scores sit mostly in the middle range and do not strongly cluster into one profile. Interpretation depends heavily on impairment, onset, context, and whether symptoms are lifelong versus recent.'
+      title: 'Moderate/Mixed Profile',
+      text: 'Traits are present but do not strongly resolve into one dominant profile from this screening set alone.'
     })
   }
 
@@ -163,21 +163,21 @@ function generateGuidance(scores) {
 
   if (elevated) {
     return {
-      title: 'Formal assessment is reasonable to consider',
-      text: 'At least one trait cluster is elevated. A clinical assessment is more strongly warranted if the traits are lifelong, occur across settings, and cause functional impairment, burnout, relationship friction, occupational friction, or need for accommodations.'
+      title: 'Formal Evaluation Priority: High',
+      text: 'At least one trait cluster is clearly elevated. A formal evaluation is the right next step when the pattern is lifelong, cross-situational, and tied to impairment, burnout, accommodations, or repeated life friction.'
     }
   }
 
   if (moderate) {
     return {
-      title: 'Assessment depends on impairment and history',
-      text: 'Moderate scores can reflect neurodivergent traits, stress, sleep disruption, anxiety, depression, trauma, medical issues, or context-specific overload. Formal evaluation is most useful when the pattern is persistent and practically consequential.'
+      title: 'Formal Evaluation Priority: Conditional',
+      text: 'Moderate scores can matter. Evaluation becomes more relevant when the traits are persistent, costly, or explain recurring friction in work, relationships, sensory tolerance, or daily execution.'
     }
   }
 
   return {
-    title: 'Low screen-level indication',
-    text: 'Scores do not strongly suggest a need for formal ADHD/autism assessment on this item set alone. This does not rule out either condition, especially if the person has strong compensatory strategies or atypical presentation.'
+    title: 'Formal Evaluation Priority: Low',
+    text: 'Scores do not strongly cluster into the ADHD or autism profiles represented by this screening tool.'
   }
 }
 
@@ -224,8 +224,8 @@ function renderResults(scores) {
   results.innerHTML = `
     <div class="results-panel" role="status" aria-live="polite">
       <div class="results-header">
-        <h2>Assessment results</h2>
-        <p>Screening output only. Not a diagnosis, medical advice, or validated replacement for ASRS, AQ, RAADS-R, CAT-Q, ADOS-2, DIVA-5, or clinician assessment.</p>
+        <h2>Assessment Results</h2>
+        <p class="result-disclaimer">Screening output only. Not a formal diagnosis or a replacement for clinician-administered assessment.</p>
       </div>
 
       <div class="score-grid">
@@ -242,7 +242,7 @@ function renderResults(scores) {
       </div>
 
       <section class="result-section">
-        <h3>Trait profile</h3>
+        <h3>Your Trait Profile</h3>
         <ul class="profile-list">
           ${profile.map((item) => `<li><b>${item.title}:</b> ${item.text}</li>`).join('')}
         </ul>
@@ -298,16 +298,16 @@ function init() {
       <header class="hero">
         <p class="eyebrow">Screening tool</p>
         <h1>Neurodivergence Pre-Assessment</h1>
-        <p class="lede">A lightweight self-report screener for ADHD traits, classic autism traits, internalized/masking-oriented autism traits, and AQ-style systemizing traits.</p>
+        <p class="lede">A direct self-report screener for ADHD traits, classic autism traits, internalized/high-masking autism traits, and AQ-style systemizing traits.</p>
         <div class="notice">
-          <b>Use constraint:</b> This is an exploratory screening tool. It is not clinically validated as a standalone diagnostic instrument and does not collect or transmit responses.
+          <b>Use constraint:</b> This is a pre-assessment tool, not a formal diagnosis. Responses are processed locally in the browser and are not transmitted.
         </div>
       </header>
 
       <form id="assessment-form">
         <div id="questions"></div>
         <div class="actions sticky-actions">
-          <button type="submit">Calculate results</button>
+          <button type="submit">Calculate Results</button>
           <button type="button" class="ghost" id="reset-form">Reset</button>
         </div>
       </form>
