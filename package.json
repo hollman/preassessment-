@@ -1,8 +1,9 @@
 {
   "name": "preassessment",
   "version": "1.0.0",
-  "description": "Preassessment project",
+  "description": "Browser-only neurodivergence pre-assessment screener",
   "type": "module",
+  "private": true,
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -10,7 +11,6 @@
   },
   "dependencies": {},
   "devDependencies": {
-    "vite": "^5.0.0",
-    "@vitejs/plugin-react": "^4.0.0"
+    "vite": "^5.0.0"
   }
 }
