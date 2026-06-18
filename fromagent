@@ -1,0 +1,160 @@
+import ipywidgets as widgets
+from IPython.display import display, clear_output, HTML
+
+# --- 1. Assessment Data ---
+questions = [
+  # ADHD Traits
+  {'id': 'adhd_1', 'category': 'adhd', 'text': "Do you often have difficulty sustaining attention during tasks or activities?"},
+  {'id': 'adhd_2', 'category': 'adhd', 'text': "Do you often feel like you're not listening when someone speaks directly to you?"},
+  {'id': 'adhd_3', 'category': 'adhd', 'text': "Do you often struggle to follow through on instructions and fail to finish tasks or duties?"},
+  {'id': 'adhd_4', 'category': 'adhd', 'text': "Do you find it difficult to organize tasks, activities, or your personal belongings?"},
+  {'id': 'adhd_5', 'category': 'adhd', 'text': "Do you often avoid or dislike tasks that require sustained mental effort, like long forms or reading?"},
+  {'id': 'adhd_6', 'category': 'adhd', 'text': "Do you frequently lose things necessary for tasks and daily activities, like keys, phones, or glasses?"},
+  {'id': 'adhd_7', 'category': 'adhd', 'text': "Are you easily distracted by unrelated thoughts or external stimuli?"},
+  {'id': 'adhd_8', 'category': 'adhd', 'text': "Do you often fidget with your hands or feet, or squirm when you have to sit still?"},
+  {'id': 'adhd_9', 'category': 'adhd', 'text': "Do you often feel restless or have an internal feeling of being driven by a motor?"},
+  {'id': 'adhd_10', 'category': 'adhd', 'text': "Do you tend to blurt out answers before a question has been fully asked, or finish other people's sentences?"},
+  {'id': 'adhd_11', 'category': 'adhd', 'text': "Do you find it highly frustrating or difficult to wait your turn in lines or conversations?"},
+  # Autism Classic
+  {'id': 'asd_1', 'category': 'asdClassic', 'text': "Do you find it difficult to understand the unwritten rules of social situations?"},
+  {'id': 'asd_2', 'category': 'asdClassic', 'text': "Do you strongly prefer to do things the exact same way over and over again?"},
+  {'id': 'asd_4', 'category': 'asdClassic', 'text': "Do you become very upset, anxious, or distressed by unexpected changes in your routine or plans?"},
+  {'id': 'asd_5', 'category': 'asdClassic', 'text': "Do you have highly intense, specific interests that you spend a lot of time researching or talking about?"},
+  {'id': 'asd_6', 'category': 'asdClassic', 'text': "Do you find making or maintaining eye contact uncomfortable or distracting when talking to someone?"},
+  {'id': 'asd_7', 'category': 'asdClassic', 'text': "Do you tend to take things very literally and sometimes miss sarcasm, jokes, or hidden meanings?"},
+  {'id': 'asd_8', 'category': 'asdClassic', 'text': "Do you easily feel overwhelmed by sensory input, such as loud noises, bright lights, or certain textures?"},
+  {'id': 'asd_9', 'category': 'asdClassic', 'text': "Do you make repetitive physical movements, like rocking, tapping, or hand-flapping, to calm down or express excitement?"},
+  {'id': 'asd_10', 'category': 'asdClassic', 'text': "Do you find small talk or casual, unstructured conversation to be exhausting or confusing?"},
+  # Autism Modern
+  {'id': 'mod_1', 'category': 'asdModern', 'text': "Do you consciously study how other people interact so you can copy them and appear normal?"},
+  {'id': 'mod_2', 'category': 'asdModern', 'text': "Do you often feel exhausted after social interactions because of the effort it takes to hide your natural behaviors?"},
+  {'id': 'mod_3', 'category': 'asdModern', 'text': "Have you experienced periods where you lose skills you previously had, like speaking or organizing, due to prolonged stress?"},
+  {'id': 'mod_4', 'category': 'asdModern', 'text': "When engaged in a task you care about, do you find it almost impossible to shift your attention to something else?"},
+  {'id': 'mod_5', 'category': 'asdModern', 'text': "Do you experience a strong internal resistance or panic when someone places a demand or expectation on you?"},
+  {'id': 'mod_6', 'category': 'asdModern', 'text': "Do you physically feel other people's emotions or get easily overwhelmed by the vibe of a room?"},
+  {'id': 'mod_7', 'category': 'asdModern', 'text': "Do you struggle to initiate tasks even when you desperately want or need to do them?"},
+  {'id': 'mod_8', 'category': 'asdModern', 'text': "Do you need significant downtime in a dark or quiet space to recover from a typical day?"},
+  {'id': 'mod_9', 'category': 'asdModern', 'text': "Do you prefer communicating via text rather than speaking because it allows you time to process and formulate responses?"},
+  {'id': 'mod_10', 'category': 'asdModern', 'text': "Do you suppress the urge to move, fidget, or make sounds in public to avoid drawing attention to yourself?"},
+  {'id': 'mod_11', 'category': 'asdModern', 'text': "Do you feel like you have multiple different personalities depending on which social group you are interacting with?"},
+  {'id': 'mod_13', 'category': 'asdModern', 'text': "Do you mentally rehearse conversations before they happen to ensure you say the right things?"},
+  {'id': 'mod_15', 'category': 'asdModern', 'text': "Does your tolerance for sensory input, like noise or light, drastically drop when you are stressed or tired?"},
+  {'id': 'mod_16', 'category': 'asdModern', 'text': "When deeply engaged in a specific interest, do you often forget to eat, drink, or use the bathroom?"},
+  {'id': 'mod_17', 'category': 'asdModern', 'text': "Do you get stuck in waiting mode when you have an appointment later in the day, unable to focus on anything else beforehand?"},
+  {'id': 'mod_20', 'category': 'asdModern', 'text': "Do you feel a profound, sometimes painful, sense of injustice when witnessing unfairness, even if it doesn't affect you directly?"},
+  {'id': 'mod_21', 'category': 'asdModern', 'text': "Do you feel an intense need to be in absolute control of your own schedule and environment to feel safe?"},
+  {'id': 'mod_23', 'category': 'asdModern', 'text': "Do you need to understand all the small, specific details of a plan or concept before you can understand the overall goal?"},
+  # Autism ASQ
+  {'id': 'asq_1', 'category': 'asdAsq', 'text': "Do you strongly prefer to do things on your own rather than with others?"},
+  {'id': 'asq_2', 'category': 'asdAsq', 'text': "Do you frequently get so strongly absorbed in one thing that you lose sight of other things happening around you?"},
+  {'id': 'asq_3', 'category': 'asdAsq', 'text': "Do you often notice small sounds when others do not?"},
+  {'id': 'asq_4', 'category': 'asdAsq', 'text': "Do you usually notice details like car license plates, specific dates, or similar strings of information?"},
+  {'id': 'asq_6', 'category': 'asdAsq', 'text': "Do you find yourself drawn more strongly to understanding things, objects, and systems rather than people?"},
+  {'id': 'asq_7', 'category': 'asdAsq', 'text': "When you talk about your interests, does it often seem hard for others to get a word in edgeways?"},
+  {'id': 'asq_8', 'category': 'asdAsq', 'text': "Are you fascinated by numbers, patterns, or categorizing specific types of information?"},
+  {'id': 'asq_9', 'category': 'asdAsq', 'text': "When reading a story or watching a movie, do you find it difficult to work out the characters' unspoken intentions or feelings?"},
+  {'id': 'asq_11', 'category': 'asdAsq', 'text': "When you talk on the phone, are you unsure when it's your turn to speak?"},
+  {'id': 'asq_12', 'category': 'asdAsq', 'text': "Do you tend to notice details of a situation or object before you notice the big picture?"}
+]
+
+options = [("Never", 0), ("Rarely", 1), ("Sometimes", 2), ("Often", 3), ("Very Often", 4)]
+
+# --- 2. Logic Functions ---
+def get_level(percent):
+    if percent < 35: return {"text": "Sub-Clinical / Low", "color": "green"}
+    if percent < 65: return {"text": "Moderate Traits", "color": "orange"}
+    return {"text": "High Likelihood", "color": "red"}
+
+def generate_profile(scores):
+    analysis = []
+    # High Profiles
+    if scores['asdModern']['percent'] >= 65 and scores['asdClassic']['percent'] < 50:
+        analysis.append("<b>High-Masking Autistic Profile:</b> Your high score in Modern criteria combined with a lower score in Classic criteria strongly suggests 'high-masking' autism. You likely experience intense autistic traits internally but actively suppress them.")
+    elif scores['asdClassic']['percent'] >= 65 and scores['asdModern']['percent'] >= 65:
+        analysis.append("<b>Classic & Internalized Autistic Profile:</b> You scored high in both traditional and modern metrics, indicating a robust autistic neurotype that affects both external social navigation and internal processing.")
+    if scores['adhd']['percent'] >= 65:
+        analysis.append("<b>Prominent ADHD Profile:</b> Your responses heavily map to the traditional definition of ADHD (executive functioning, attention regulation). If paired with Autism scores, you may experience 'AuDHD' internal friction.")
+    if scores['asdAsq']['percent'] >= 65 and scores['asdClassic']['percent'] < 50 and scores['asdModern']['percent'] < 50:
+        analysis.append("<b>Systemizing Cognitive Style:</b> You possess a brain heavily wired for systemizing, pattern recognition, and detailed observation without the distress criteria, suggesting a non-clinical neurodivergent cognitive style.")
+    
+    # Low Profiles
+    if scores['asdModern']['percent'] < 35:
+        analysis.append("<b>Low Internalized Autistic Traits:</b> You do not report significant levels of masking, burnout, or demand avoidance.")
+    if scores['asdClassic']['percent'] < 35:
+        analysis.append("<b>Low Classic Autistic Traits:</b> You do not report significant struggles with traditional autistic markers.")
+    if scores['adhd']['percent'] < 35:
+        analysis.append("<b>Low ADHD Traits:</b> Your attention regulation and executive functioning appear typical.")
+    if scores['asdAsq']['percent'] < 35:
+        analysis.append("<b>Low Systemizing Traits:</b> Your cognitive style does not lean heavily toward rigid pattern recognition.")
+
+    if not analysis:
+        analysis.append("<b>Moderate/Mixed Profile:</b> Your scores fall entirely in the moderate range. Traits do not strongly cluster into a specific dominant profile.")
+        
+    return analysis
+
+def clinical_guidance(scores):
+    is_high = any(s['percent'] >= 65 for s in scores.values())
+    is_mod = any(s['percent'] >= 35 for s in scores.values())
+    if is_high:
+        return "<b>Clinical Assessment is Strongly Indicated.</b> High scores map to established clinical definitions. If these traits cause chronic burnout or distress, a medical assessment can open doors to accommodations. If you experience no impairment, you may just possess a valid divergent neurotype."
+    elif is_mod:
+        return "<b>Assessment may be beneficial depending on distress levels.</b> You exhibit moderate traits. Assessment is warranted if these traits represent a change in functioning or cause friction in daily life."
+    return "<b>Clinical Assessment is Not Currently Indicated.</b> Your responses do not cluster into recognized diagnostic criteria."
+
+# --- 3. User Interface ---
+form_items = []
+answers_widgets = {}
+
+display(HTML("<h2>Neurodivergence Pre-Assessment</h2><p>Please select the answer that best fits your experience over the past 6 months.</p><hr/>"))
+
+for i, q in enumerate(questions):
+    radio = widgets.RadioButtons(options=options, value=0, layout={'width': 'max-content'})
+    answers_widgets[q['id']] = radio
+    form_items.append(widgets.VBox([
+        widgets.HTML(value=f"<p><b>{i+1}. {q['text']}</b></p>"),
+        radio,
+        widgets.HTML(value="<br/>")
+    ]))
+
+ui_form = widgets.VBox(form_items)
+submit_btn = widgets.Button(description="Calculate Results", button_style="primary", layout={'width': '300px', 'height': '50px'})
+output_area = widgets.Output()
+
+def on_submit(b):
+    with output_area:
+        clear_output(wait=True)
+        scores = {'adhd': 0, 'asdClassic': 0, 'asdModern': 0, 'asdAsq': 0}
+        max_scores = {'adhd': 0, 'asdClassic': 0, 'asdModern': 0, 'asdAsq': 0}
+        
+        for q in questions:
+            max_scores[q['category']] += 4
+            scores[q['category']] += answers_widgets[q['id']].value
+            
+        formatted = {}
+        for cat in scores:
+            percent = int((scores[cat] / max_scores[cat]) * 100)
+            formatted[cat] = {'score': scores[cat], 'percent': percent, 'level': get_level(percent)}
+
+        html_result = "<h2>Assessment Results</h2><hr/><h3>Category Scores</h3><ul>"
+        categories_map = {
+            'adhd': 'ADHD Traits (Traditional)',
+            'asdClassic': 'Autism (Classic DSM-5)',
+            'asdModern': 'Autism (Modern/Internal)',
+            'asdAsq': 'Autism Quotient (ASQ)'
+        }
+        
+        for cat, label in categories_map.items():
+            data = formatted[cat]
+            html_result += f"<li><b>{label}:</b> {data['percent']}% - <span style='color:{data['level']['color']}'><b>{data['level']['text']}</b></span></li>"
+            
+        html_result += "</ul><hr/><h3>Your Trait Profile</h3><ul>"
+        for profile in generate_profile(formatted):
+            html_result += f"<li>{profile}</li><br/>"
+            
+        html_result += "</ul><hr/><h3>Clinical Assessment Guidance</h3>"
+        html_result += f"<p>{clinical_guidance(formatted)}</p>"
+        
+        display(HTML(html_result))
+
+submit_btn.on_click(on_submit)
+display(ui_form, submit_btn, output_area)
