@@ -73,6 +73,12 @@ const categoryDescriptions = {
   asdAsq: 'AQ-style markers: systemizing, detail-focus, absorption, pattern attention, and social inference.'
 }
 
+const state = {
+  currentIndex: 0,
+  answers: Object.fromEntries(questions.map((question) => [question.id, null])),
+  showingResults: false
+}
+
 function getLevel(percent) {
   if (percent < 35) return { text: 'Sub-Clinical / Low', className: 'low' }
   if (percent < 65) return { text: 'Moderate Traits', className: 'moderate' }
@@ -86,13 +92,19 @@ function emptyScores() {
   }, {})
 }
 
+function answeredCount() {
+  return Object.values(state.answers).filter((value) => value !== null).length
+}
+
+function isCurrentAnswered() {
+  return state.answers[questions[state.currentIndex].id] !== null
+}
+
 function calculateScores() {
   const scores = emptyScores()
 
   questions.forEach((question) => {
-    const selected = document.querySelector(`input[name="${question.id}"]:checked`)
-    const value = selected ? Number(selected.value) : 0
-    scores[question.category].raw += value
+    scores[question.category].raw += Number(state.answers[question.id] ?? 0)
     scores[question.category].max += 4
   })
 
@@ -181,49 +193,118 @@ function generateGuidance(scores) {
   }
 }
 
-function renderQuestions() {
-  const container = document.querySelector('#questions')
-  const grouped = questions.reduce((acc, question) => {
-    if (!acc[question.category]) acc[question.category] = []
-    acc[question.category].push(question)
-    return acc
-  }, {})
+function renderApp() {
+  document.querySelector('#app').innerHTML = `
+    <main class="app-shell">
+      <header class="hero compact-hero">
+        <p class="eyebrow">Screening tool</p>
+        <h1>Neurodivergence Pre-Assessment</h1>
+        <p class="lede">A direct self-report screener for ADHD traits, classic autism traits, internalized/high-masking autism traits, and AQ-style systemizing traits.</p>
+        <div class="notice">
+          <b>Use constraint:</b> This is a pre-assessment tool, not a formal diagnosis. Responses are processed locally in the browser and are not transmitted.
+        </div>
+      </header>
 
-  container.innerHTML = Object.entries(grouped).map(([category, items]) => `
-    <section class="question-section" aria-labelledby="${category}-heading">
-      <div class="section-heading">
-        <h2 id="${category}-heading">${categoryLabels[category]}</h2>
-        <p>${categoryDescriptions[category]}</p>
-      </div>
-      ${items.map((question) => renderQuestion(question)).join('')}
-    </section>
-  `).join('')
-}
-
-function renderQuestion(question) {
-  return `
-    <fieldset class="question-card">
-      <legend>${question.text}</legend>
-      <div class="options">
-        ${options.map((option) => `
-          <label class="option">
-            <input type="radio" name="${question.id}" value="${option.value}" ${option.value === 0 ? 'checked' : ''} />
-            <span>${option.label}</span>
-          </label>
-        `).join('')}
-      </div>
-    </fieldset>
+      <section id="assessment-stage" aria-label="Assessment"></section>
+    </main>
   `
+
+  if (state.showingResults) {
+    renderResults()
+  } else {
+    renderQuestionScreen()
+  }
 }
 
-function renderResults(scores) {
+function renderQuestionScreen() {
+  const stage = document.querySelector('#assessment-stage')
+  const question = questions[state.currentIndex]
+  const progressPercent = Math.round((answeredCount() / questions.length) * 100)
+  const selectedValue = state.answers[question.id]
+  const isFirst = state.currentIndex === 0
+  const isLast = state.currentIndex === questions.length - 1
+
+  stage.innerHTML = `
+    <div class="wizard-shell">
+      <div class="wizard-progress" aria-label="Assessment progress">
+        <div class="progress-copy">
+          <span>Question ${state.currentIndex + 1} of ${questions.length}</span>
+          <span>${answeredCount()} answered</span>
+        </div>
+        <div class="progress-track" aria-hidden="true"><span style="width:${progressPercent}%"></span></div>
+      </div>
+
+      <article class="wizard-card">
+        <div class="question-meta">
+          <span>${categoryLabels[question.category]}</span>
+          <p>${categoryDescriptions[question.category]}</p>
+        </div>
+
+        <h2>${question.text}</h2>
+
+        <div class="wizard-options" role="radiogroup" aria-label="Answer options">
+          ${options.map((option) => `
+            <button
+              type="button"
+              class="answer-option ${selectedValue === option.value ? 'selected' : ''}"
+              data-value="${option.value}"
+              aria-pressed="${selectedValue === option.value}"
+            >
+              <span>${option.label}</span>
+              <small>${option.value}</small>
+            </button>
+          `).join('')}
+        </div>
+
+        <p class="answer-hint">${isCurrentAnswered() ? 'Answer saved.' : 'Choose an answer to continue.'}</p>
+      </article>
+
+      <div class="wizard-actions">
+        <button type="button" class="ghost" id="back-btn" ${isFirst ? 'disabled' : ''}>Back</button>
+        <button type="button" class="ghost" id="reset-btn">Reset</button>
+        <button type="button" id="next-btn" ${!isCurrentAnswered() ? 'disabled' : ''}>${isLast ? 'Calculate Results' : 'Next'}</button>
+      </div>
+    </div>
+  `
+
+  document.querySelectorAll('.answer-option').forEach((button) => {
+    button.addEventListener('click', () => {
+      state.answers[question.id] = Number(button.dataset.value)
+      renderQuestionScreen()
+    })
+  })
+
+  document.querySelector('#back-btn').addEventListener('click', () => {
+    if (state.currentIndex > 0) {
+      state.currentIndex -= 1
+      renderQuestionScreen()
+    }
+  })
+
+  document.querySelector('#reset-btn').addEventListener('click', resetAssessment)
+
+  document.querySelector('#next-btn').addEventListener('click', () => {
+    if (!isCurrentAnswered()) return
+    if (isLast) {
+      state.showingResults = true
+      renderResults()
+    } else {
+      state.currentIndex += 1
+      renderQuestionScreen()
+    }
+  })
+}
+
+function renderResults() {
+  const stage = document.querySelector('#assessment-stage')
+  const scores = calculateScores()
   const profile = generateProfile(scores)
   const guidance = generateGuidance(scores)
-  const results = document.querySelector('#results')
 
-  results.innerHTML = `
+  stage.innerHTML = `
     <div class="results-panel" role="status" aria-live="polite">
       <div class="results-header">
+        <p class="eyebrow">Complete</p>
         <h2>Assessment Results</h2>
         <p class="result-disclaimer">Screening output only. Not a formal diagnosis or a replacement for clinician-administered assessment.</p>
       </div>
@@ -256,13 +337,21 @@ function renderResults(scores) {
       <div class="actions secondary-actions">
         <button type="button" id="copy-results">Copy results</button>
         <button type="button" id="print-results">Print / save PDF</button>
+        <button type="button" class="ghost" id="edit-answers">Edit answers</button>
+        <button type="button" class="ghost" id="start-over">Start over</button>
       </div>
     </div>
   `
 
   document.querySelector('#copy-results').addEventListener('click', () => copyResults(scores, guidance))
   document.querySelector('#print-results').addEventListener('click', () => window.print())
-  results.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  document.querySelector('#edit-answers').addEventListener('click', () => {
+    state.showingResults = false
+    state.currentIndex = 0
+    renderQuestionScreen()
+  })
+  document.querySelector('#start-over').addEventListener('click', resetAssessment)
+  stage.scrollIntoView({ behavior: 'smooth', block: 'start' })
 }
 
 async function copyResults(scores, guidance) {
@@ -284,46 +373,12 @@ async function copyResults(scores, guidance) {
   }
 }
 
-function resetForm() {
-  document.querySelectorAll('input[type="radio"][value="0"]').forEach((input) => {
-    input.checked = true
-  })
-  document.querySelector('#results').innerHTML = ''
+function resetAssessment() {
+  state.currentIndex = 0
+  state.showingResults = false
+  state.answers = Object.fromEntries(questions.map((question) => [question.id, null]))
+  renderQuestionScreen()
   window.scrollTo({ top: 0, behavior: 'smooth' })
 }
 
-function init() {
-  document.querySelector('#app').innerHTML = `
-    <main class="app-shell">
-      <header class="hero">
-        <p class="eyebrow">Screening tool</p>
-        <h1>Neurodivergence Pre-Assessment</h1>
-        <p class="lede">A direct self-report screener for ADHD traits, classic autism traits, internalized/high-masking autism traits, and AQ-style systemizing traits.</p>
-        <div class="notice">
-          <b>Use constraint:</b> This is a pre-assessment tool, not a formal diagnosis. Responses are processed locally in the browser and are not transmitted.
-        </div>
-      </header>
-
-      <form id="assessment-form">
-        <div id="questions"></div>
-        <div class="actions sticky-actions">
-          <button type="submit">Calculate Results</button>
-          <button type="button" class="ghost" id="reset-form">Reset</button>
-        </div>
-      </form>
-
-      <section id="results" aria-label="Assessment results"></section>
-    </main>
-  `
-
-  renderQuestions()
-
-  document.querySelector('#assessment-form').addEventListener('submit', (event) => {
-    event.preventDefault()
-    renderResults(calculateScores())
-  })
-
-  document.querySelector('#reset-form').addEventListener('click', resetForm)
-}
-
-init()
+renderApp()
